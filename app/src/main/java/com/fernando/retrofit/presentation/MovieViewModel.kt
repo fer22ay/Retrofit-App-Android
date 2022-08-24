@@ -9,28 +9,30 @@ import kotlinx.coroutines.Dispatchers
 import java.lang.Exception
 
 class MovieViewModel(private val repo: MovieRepository) : ViewModel() {
-    fun fetchUpcomingMovies() = liveData(Dispatchers.IO) {
+    fun fetchMainScreenMovies() = liveData(Dispatchers.IO) {
         emit(Resource.Loading())
         try {
-            emit(Resource.Success(repo.getUpcomingMovies()))
+            emit(
+                Resource.Success(
+                    Triple(
+                        repo.getUpcomingMovies(),
+                        repo.getTopRatedMovies(),
+                        repo.getPopularMovies()
+                    )
+                )
+            )
         } catch (e: Exception) {
             emit(Resource.Failure(e))
         }
     }
 
-    fun fetchTopRatedMovies() = liveData(Dispatchers.IO) {
+    /**
+     * Function to show list plants
+     */
+    fun fetchPlants() = liveData(Dispatchers.IO) {
         emit(Resource.Loading())
         try {
-            emit(Resource.Success(repo.getUpcomingMovies()))
-        } catch (e: Exception) {
-            emit(Resource.Failure(e))
-        }
-    }
-
-    fun fetchPopularMovies() = liveData(Dispatchers.IO) {
-        emit(Resource.Loading())
-        try {
-            emit(Resource.Success(repo.getUpcomingMovies()))
+            emit(Resource.Success(repo.getPlants()))
         } catch (e: Exception) {
             emit(Resource.Failure(e))
         }
